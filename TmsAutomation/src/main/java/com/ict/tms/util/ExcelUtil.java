@@ -1,14 +1,14 @@
-package com.ict.tms.auto.util;
+package com.ict.tms.util;
 
 import java.io.FileInputStream;
-import java.util.logging.Logger;
 
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtil {
 	
-	private static final Logger LOGGER = Logger.getLogger(ExcelUtil.class.getName()); 
+	
 	
 	private static XSSFWorkbook excelBook;
 	
@@ -17,12 +17,13 @@ public class ExcelUtil {
 	public static String getCellData(int rowNum, int colNum) {
 		
 		String cellValue = null;
+		DataFormatter dataFormater = new DataFormatter();
 		
 		try(FileInputStream excelFile = new FileInputStream(System.getProperty("user.dir") + "/src/main/resources/testData.xlsx")){
 		
 			excelBook = new XSSFWorkbook(excelFile);
 			excelSheet = excelBook.getSheetAt(0);
-			cellValue = excelSheet.getRow(rowNum).getCell(colNum).getStringCellValue();
+			cellValue = dataFormater.formatCellValue(excelSheet.getRow(rowNum).getCell(colNum));
 			
 		}catch(Exception e) {
 			e.printStackTrace();
