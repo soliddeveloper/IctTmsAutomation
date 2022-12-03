@@ -1,37 +1,38 @@
 package com.ict.tms.script.login;
 
 
-import org.testng.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
-import com.ict.tms.constants.AppConstants;
+import com.ict.tms.config.AbstractBaseTest;
 import com.ict.tms.pages.LoginPage;
-import com.ict.tms.script.TestBase;
 import com.ict.tms.util.ExcelUtil;
 
-public class LoginScripts extends TestBase {
+public class LoginScripts extends AbstractBaseTest {
 	
-	private LoginPage loginPage;
+	private LoginPage login() {
+		return App().Page().login();
+	}
 	
 	@Test
 	public void verifyValidLogin() {
 		
-		loginPage = new LoginPage(driver);
-		
 		String emailId = ExcelUtil.getCellData(0, 0);
 		String password = ExcelUtil.getCellData(0, 1);
 		
-		loginPage.sendEmailAddress(emailId);
+		login().sendEmailAddress(emailId);
 		
-		loginPage.sendPassword(password);
+		login().sendPassword(password);
 		
-		loginPage.clickLogin();
+		login().clickLogin();		
 		
-		String title = driver.getTitle();
-		Assert.assertEquals(title, AppConstants.LOGIN_PAGE_TITLE);
+		WebDriverWait wait = App().Flow().ofWebDriverWait(10L);
 		
-				
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("app-admindash")));
 		
+		String currentUrl = App().Flow().getCurrentUrl();
 	}
 
 }

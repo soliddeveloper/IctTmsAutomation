@@ -5,35 +5,33 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.ict.tms.elements.LoginPageElements;
+
 public class LoginPage {
-	
-	WebDriver webDriver;
-	
-	@FindBy(id="floatingInput")
-	private WebElement emailAddress;
-	
-	@FindBy(id="floatingPassword")
-	private WebElement password;
-	
-	@FindBy(css = "button[type = \"submit\"]")
-	private WebElement loginButton;
-	
+
+	private WebDriver webDriver;
+
+	private LoginPageElements loginPageElements;
+
 	public LoginPage(WebDriver webDriver) {
 		this.webDriver = webDriver;
-		
-		PageFactory.initElements(webDriver, this);
+		loginPageElements = new LoginPageElements(this.webDriver);
 	}
-	
+
+	private LoginPageElements ofLoginPageElements() {
+		return loginPageElements;
+	}
+
 	public void sendEmailAddress(String emailId) {
-		emailAddress.sendKeys(emailId);
+		ofLoginPageElements().getEmailAddress().sendKeys(emailId);
 	}
-	
+
 	public void sendPassword(String pwd) {
-		password.sendKeys(pwd);
+		ofLoginPageElements().getPassword().sendKeys(pwd);
 	}
-	
+
 	public void clickLogin() {
-		loginButton.click();
+		ofLoginPageElements().getLoginButton().click();
 	}
 
 }
